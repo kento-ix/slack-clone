@@ -40,10 +40,11 @@ export const postChannel = async (channel: Channel) => {
     await addDoc(collection(db, "channels"), channel);
 };
 
-export const createChannel = (name: string): Channel => {
+export const createChannel = (name: string, color: string): Channel => {
     const timestamp = Timestamp.fromDate(new Date());
     return {
         name: name,
+        color: color,
         create_at: timestamp,
     };
 };

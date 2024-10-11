@@ -5,6 +5,7 @@ type Props = {handleCloseModal: () => void};
 
 export const ChannelAddModal = ({ handleCloseModal }: Props) => {
     const [channelName, setChannelName] = useState('');
+    const [channelColor, setChannelColor] = useState('#ffffff');
 
     const handleChannelNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setChannelName(e.target.value);
@@ -14,8 +15,9 @@ export const ChannelAddModal = ({ handleCloseModal }: Props) => {
         if (!channelName.trim()) return;
 
         try {
-            await postChannel(createChannel(channelName))
+            await postChannel(createChannel(channelName, channelColor))
             setChannelName('');
+            setChannelColor('#ffffff');
             handleCloseModal();
         } catch (e) {
             console.error('Error adding document: ', e);
