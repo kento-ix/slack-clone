@@ -1,4 +1,4 @@
-import {getFirestore, query, collection, where, addDoc, onSnapshot, Timestamp} from "firebase/firestore";
+import { getFirestore, query, collection, where, addDoc, onSnapshot, Timestamp, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import {firebaseApp} from '../../firebase/firebaseConfig';
 import {Message, MessageRef} from "../../type/Message";
 
@@ -40,3 +40,27 @@ export const createMessage = (
         update_at: timestamp,
     };
 };
+
+export const deleteMessage = async (messageId: string): Promise<void> => {
+    try {
+        const messageRef = doc(db, "messages", messageId);
+        await deleteDoc(messageRef);
+    } catch(error) {
+        console.error("Error deleting message:", error);
+        throw error;
+    }
+} 
+
+export const updateMessage = async (messageId: string, newText: string): Promise<void> => {
+    try {
+        const messageRef = doc(db, "messages", messageId);
+        await updateDoc(messageRef, {
+            text: newText,
+            is_edited: true,
+            update_at: Timestamp.fromDate(new Date()),
+        });
+    } catch (error) {
+        console.error("Error updating message:", error);
+        throw error;
+    }
+}
